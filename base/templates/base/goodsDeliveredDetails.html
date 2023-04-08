@@ -1,0 +1,92 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+ <div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 10%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Goods Delivered Details</h2>
+            </div>
+             {% for message in messages%}
+
+                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      &nbsp;{{message}}
+
+                  </div>
+                   {%endfor%}
+
+            <form class="mt-5" method="" action="">
+                {% csrf_token%}
+                 {% for message in messages%}
+
+                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      &nbsp;{{message}}
+
+                  </div>
+                   {%endfor%}
+                <label ><strong>Ride Name</strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.rideName}}" readonly="true" name="riderName" ><br/>
+                <label><strong>Rider's Phone number </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.riderPhoneNumber}}" readonly="true" name="riderNumber" ><br/>
+                <label ><strong>Ride Type</strong> </label><br/>
+
+                <input type="text" class="login-input" value="{{getproposal.rideType}}" readonly="true" name="rideType" >
+                 <label ><strong>Sender's Name </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.senderName}}"  readonly="true" name="senderName" ><br/>
+
+
+                <label ><strong>Sender's Email </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.email}}"  readonly="true" name="senderEmail" ><br/>
+
+                <label ><strong>Sender's Phone number </strong> </label><br/>
+                <input type="text" class="login-input"  value="{{getproposal.senderPhoneNumber}}" readonly="true" name="sendernumber" ><br/>
+                <label ><strong>Name of Goods  </strong></label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.goodsName}}" name="goodsName" >
+                <label ><strong>Receiver Name </strong></label><br/>
+                <input type="text" class="login-input disabled" readonly="true" value="{{getproposal.senderName}}"  name="senderName" >
+
+                <label ><strong>Receiver Address </strong>  </label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.receiverAddress}}"  name="receiverAddress" >
+
+                <label ><strong> Receiver Phone number</strong> </label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.receiverPhoneNumber}}"  name="receiverNumber" >
+                <label ><strong>Amount</strong> </label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.amount}}"  placeholder="Dispatch Rider's Fee" name="amount" >
+               <hr>
+
+
+                <label ><strong>Goods  Description</strong></label><br/>
+                <textarea class="login-input" readonly="true"   name="goodsDescription" placeholder="Describe the goods in details"  cols="30" rows="5">{{getproposal.goodsDescription}}</textarea><br/>
+                  {%if getproposal.deliver%}
+
+                <p style="width:100%;" class="btn btn-success mt-3">Delivered</p>
+                {%else%}
+                <p style="width:100%" class="btn btn-secondary mt-3">Pending Delivery</p>
+                {% endif %}
+                <br>
+                <!-- <a style="width: 100%; margin-top: 20px;" class="btn btn-secondary disabled" href="">Accept Proposal</a>-->
+
+
+
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+{% endblock%}
+</div>

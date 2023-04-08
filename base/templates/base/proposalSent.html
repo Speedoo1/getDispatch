@@ -1,0 +1,40 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+<div class="container">
+        <div class="container " style="background-color: #fff; margin-top: 5%;  padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Proposal Sent By You</h2>
+            </div>
+           <hr/>
+            {% for i in sentproposal %}
+            <div class="shadow-sm proposal">
+
+                <i style="font-size:24px" class="fa ml-3">&#xf003;</i> <span class="ml-1" style="font-size: 20px; text-align: left;"><strong>{{i.rideName}}</strong> </span>
+                <p class="mt-1" style="font-size: 17px; margin-left: 35px;"><i class='far fa-clock' ></i> {{i.update|timesince}} ago</p>
+                <p style="font-size: 20px; margin-left: 35px;">{{i.goodsDescription|truncatewords:11}}</p>
+                <a href="{% url 'base:proposalupdate' i.id %}" style="width: 100%;" class="btn btn-success">View more</a>
+
+            </div>
+            <hr style="color: #333;"/>
+             {%empty%}
+            <h5>You have not sent a proposal so far, if you have a goods <br/>to send you can browse through the dispatch rider available<br/> close to you and send them a proposal of the item you want <br/> to send</h5>
+                <br/>
+            <a href="{% url 'base:index'%}" style="width:100%" class="btn btn-secondary">Get a Dispatch Rider</a>
+
+            {%endfor%}
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+    {%endblock%}
+</div>

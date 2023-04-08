@@ -1,0 +1,67 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+ <div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 10%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Send Proposal</h2>
+            </div>
+            <form class="mt-5" method="post" action="{% url 'base:sendproposal' getrider.id %}">
+                {% csrf_token%}
+                <label for=""><strong>Ride Name</strong> </label><br/>
+                <input type="text" class="login-input" value="{{getrider.rideName}}" readonly="true" name="riderName" ><br/>
+                <label for=""><strong>Rider's Phone number </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getrider.phoneNumber}}" readonly="true" name="riderNumber" ><br/>
+                <label for=""><strong>Ride Type</strong> </label><br/>
+
+                <input type="text" class="login-input" value="{{getrider.rideType}}" readonly="true" name="rideType" >
+                 <label for=""><strong>Sender's Name </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getuser.fullName}}"  readonly="true" name="senderName" ><br/>
+
+
+                <label for=""><strong>Sender's Email </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getuser.email}}"  readonly="true" name="senderEmail" ><br/>
+
+                <label for=""><strong>Sender's Phone number </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getuser.phoneNumber}}" readonly="true" name="sendernumber" ><br/>
+                <label for=""><strong>Name of Goods  </strong></label><br/>
+                <input type="text" class="login-input" name="goodsName" >
+                <label for=""><strong>Receiver Name </strong></label><br/>
+                <input type="text" class="login-input disabled"  name="receiverName" >
+
+                <label for=""><strong>Receiver Address </strong>  </label><br/>
+                <input type="text" class="login-input"  name="receiverAddress" >
+
+                <label for=""><strong> Receiver Phone number</strong> </label><br/>
+                <input type="text" class="login-input"   name="receiverNumber" >
+                <label for=""><strong>Amount</strong> </label><br/>
+                <input type="text" class="login-input"  placeholder="Dispatch Rider's Fee" name="amount" >
+               <hr>
+
+
+                <label for=""><strong>Goods  Description</strong></label><br/>
+                <textarea class="login-input"  name="goodsDescription" placeholder="Describe the goods in details"  cols="30" rows="5"></textarea><br/>
+
+                <input style="width: 100%;" type="submit" class="btn btn-success"  value="Send Proposal" name="" id="">
+                <br>
+                <!-- <a style="width: 100%; margin-top: 20px;" class="btn btn-secondary disabled" href="">Accept Proposal</a>-->
+
+
+
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+{% endblock%}
+</div>

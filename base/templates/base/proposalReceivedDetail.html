@@ -1,0 +1,79 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+ <div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 10%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Proposal Received</h2>
+            </div>
+            <form class="mt-5" method="post" action="{% url 'base:acceptProposal' getproposal.id %}">
+                {% csrf_token%}
+                 {% for message in messages%}
+
+                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      &nbsp;{{message}}
+
+                  </div>
+                   {%endfor%}
+                <label for=""><strong>Ride Name</strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.rideName}}" readonly="true" name="riderName" ><br/>
+                <label for=""><strong>Rider's Phone number </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.riderPhoneNumber}}" readonly="true" name="riderNumber" ><br/>
+                <label for=""><strong>Ride Type</strong> </label><br/>
+
+                <input type="text" class="login-input" value="{{getproposal.rideType}}" readonly="true" name="rideType" >
+                 <label for=""><strong>Sender's Name </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.senderName}}"  readonly="true" name="senderName" ><br/>
+
+
+                <label for=""><strong>Sender's Email </strong> </label><br/>
+                <input type="text" class="login-input" value="{{getproposal.email}}"  readonly="true" name="senderEmail" ><br/>
+
+                <label for=""><strong>Sender's Phone number </strong> </label><br/>
+                <input type="text" class="login-input"  value="{{getproposal.senderPhoneNumber}}" readonly="true" name="sendernumber" ><br/>
+                <label for=""><strong>Name of Goods  </strong></label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.goodsName}}" name="goodsName" >
+                <label for=""><strong>Receiver Name </strong></label><br/>
+                <input type="text" class="login-input disabled" readonly="true" value="{{getproposal.senderName}}"  name="senderName" >
+
+                <label for=""><strong>Receiver Address </strong>  </label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.receiverAddress}}"  name="receiverAddress" >
+
+                <label for=""><strong> Receiver Phone number</strong> </label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.receiverPhoneNumber}}"  name="receiverNumber" >
+                <label for=""><strong>Amount</strong> </label><br/>
+                <input type="text" class="login-input" readonly="true" value="{{getproposal.amount}}"  placeholder="Dispatch Rider's Fee" name="amount" >
+               <hr>
+
+
+                <label for=""><strong>Goods  Description</strong></label><br/>
+                <textarea class="login-input" readonly="true"   name="goodsDescription" placeholder="Describe the goods in details"  cols="30" rows="5">{{getproposal.goodsDescription}}</textarea><br/>
+                <p>Note: Kindly verify what is on the proposal sent to you before accepting<br/>the  proposal, confirm the receiver's phone number, the receiver's house<br/>  address, and ask the receiver if he or she will be available for pick up<br/>
+                    if all this informations are positive you can then proceed to accept the <br/>proposal.</p>
+                <input style="width: 100%;" type="submit" class="btn btn-success"  value="Accept Proposal" name="" id="">
+                <a href="" style="width:100%" class="btn btn-danger mt-3">Reject Proposal</a>
+                <br>
+                <!-- <a style="width: 100%; margin-top: 20px;" class="btn btn-secondary disabled" href="">Accept Proposal</a>-->
+
+
+
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+{% endblock%}
+</div>

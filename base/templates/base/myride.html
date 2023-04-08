@@ -1,0 +1,44 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+<div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 5%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>My Rides</h2>
+            </div>
+           <hr/>
+            {% for i in rides %}
+            <div class="shadow-sm proposal">
+
+                <img src="{{i.image.url}}" style=" clip-path: circle(50%);" width="50"> <span class="ml-1" style="font-size: 20px; text-align: left;"><strong>{{i.rideName}}</strong> </span>
+                <p class="mt-1" style="font-size: 17px; margin-left: 35px;"><i class='far fa-clock' ></i> {{i.created|timesince}} ago</p>
+                <p style="font-size: 20px; margin-left: 35px;">{{i.rideDescription|truncatewords:11}}</p>
+                {% if i.verified%}
+                <p style="color:green;margin-left: 35px"><strong>Verified</strong> </p>
+                {%else%}
+                <p style="color:red;margin-left: 35px"><strong>Not Verified</strong> </p>
+                {%endif%}
+
+                <a href="{% url 'base:rideDetails' i.id %}" style="width: 100%;" class="btn btn-success">View more</a>
+
+            </div>
+            <hr style="color: #333;"/>
+            {%empty%}
+            <h5>You have not created any ride yet<br/> click the button below to create <br/>a new ride </h5>
+            <a href="{% url 'base:ride'%}" class="btn btn-success mt-3" style="width:100%;">Create new Ride</a>
+            {%endfor%}
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+    {%endblock%}
+</div>

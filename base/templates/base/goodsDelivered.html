@@ -1,0 +1,50 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+<div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 5%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Goods Delivered</h2>
+            </div>
+           <hr/>
+             {% for message in messages%}
+
+                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      &nbsp;{{message}}
+
+                  </div>
+                   {%endfor%}
+            <br/>
+            {% for i in getproposal %}
+            <div class="shadow-sm proposal">
+
+                <i style="font-size:24px" class="fa ml-3">&#xf003;</i> <span class="ml-1" style="font-size: 20px; text-align: left;"><strong>{{i.senderName}}</strong> </span>
+                <p class="mt-1" style="font-size: 17px; margin-left: 35px;"><i class='far fa-clock' ></i> {{i.update|timesince}} ago</p>
+                <p style="font-size: 20px; margin-left: 35px;">{{i.goodsDescription|truncatewords:11}}</p>
+                <a href="{% url 'base:delivered' i.id %}" style="width: 100%;" class="btn btn-success">View more</a>
+
+            </div>
+            <hr style="color: #333;"/>
+            {% empty %}
+            <h5>You have not delivered goods so far<br/> </h5>
+                <br/>
+
+            {%endfor%}
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+    {%endblock%}
+</div>

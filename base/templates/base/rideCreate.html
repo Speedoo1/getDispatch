@@ -1,0 +1,96 @@
+<div style="background-color: darkgrey;">
+    {% extends 'base/navbar.html'%}
+{%load static %}
+
+{% block body%}
+ <div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 10%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Create Ride</h2>
+            </div>
+            <form class="mt-5" method="post" action="{%url 'base:ride'%}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for=""><strong>Ride Name </strong> </label><br/>
+                <input type="text" class="login-input" name="rideName" ><br/>
+                <label for=""><strong>Ride Type</strong> </label><br/>
+
+                <select class="login-input" name="rideType" id="e"  style="display: block; margin-top:12px ;" required>
+                    <option value="">--SELECT--</option>
+                    <option value="Car">Car</option>
+                    <option value="Bike">Bike</option>
+                    <option value="skate">Skate</option>
+                    <option value="Bicycle">Bicycle</option>
+                    <option value="Van">Van</option>
+                    <option value="bus">Bus</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Tricycle">Tricycle</option>
+         </select>
+
+
+                <label for=""><strong>Phone number</strong> </label><br/>
+                <input type="text" class="login-input" name="number" >
+                 <label for=""><strong>State</strong> </label><br/>
+                <input type="text" class="login-input" name="state" ><br>
+                 <label for=""><strong>LGA</strong> </label><br/>
+                <input type="text" class="login-input" name="lga" >
+                <br>
+                 <label for=""><strong>Amount</strong> </label><br/>
+                <input type="number" class="login-input" name="amount" >
+                <label ><b>Image of the Ride</b></label>
+                <input style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="rideImage"  accept="application/jpg, application/png" required>
+                <hr>
+                <div class="ride-preview">
+                    <label ><b>Ride Preview 1</b></label>
+                    <input style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="preview1"  accept="application/jpg, application/png" required><br/>
+
+                    <label ><b>Ride Preview 2</b></label>
+                    <input  style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="preview2"  accept="application/jpg, application/png" required><br/>
+
+                    <label ><b>Ride Preview 3</b></label>
+                    <input style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="preview3"  accept="application/jpg, application/png" required><br/>
+
+                    <label ><b>Ride Preview 4</b></label>
+                    <input style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="preview4"  accept="application/jpg, application/png" required><br/>
+
+                    <label ><b>Ride Preview 5</b></label>
+                    <input style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="preview5"  accept="application/jpg, application/png" required><br/>
+
+
+
+                </div>
+                <hr/>
+                <label ><b>Plate Number Image of Ride:</b></label>
+
+                <input style="border: 1px solid #333;" class="login-input" type="file" autocomplete="off"   name="plateImage"  accept="application/jpg, application/png" required>
+
+
+
+
+
+                <hr>
+
+                <br/>
+                <label for=""><strong>Ride Description</strong></label><br/>
+                <textarea class="login-input" name="rideDescription"  cols="30" rows="10"></textarea><br/>
+
+                <input style="width: 100%;" type="submit" class="btn btn-success"  value="Create Ride" name="" id="">
+
+
+
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+{% endblock%}
+</div>
