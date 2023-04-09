@@ -25,7 +25,7 @@ def getgeo(request):
 
         except:
             pass
-        return HttpResponse('worked')
+    return HttpResponse('worked')
 
 
 # this is the home page where you can see the list of available dispatch rider
@@ -189,7 +189,7 @@ def proposalSent(request):
 # this method allow the Dispatch rider the freedom to accept proposal that is being sent to him
 def acceptproposal(request, pk):
     getproposal = proposal.objects.get(id=pk)
-    if request.user == getproposal.riderUsername:
+    if request.user.phoneNumber == getproposal.riderUsername:
         pass
     else:
         return redirect('base:index')

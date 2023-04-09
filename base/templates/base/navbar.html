@@ -22,7 +22,7 @@
      <link rel="stylesheet" href="{% static 'base/style.css' %}">
 
 </head>
-<body>
+<body onload="getLocation();">
 <!--fix-header-->
  <header id="header" class="">
         <div class="strip d-flex justify-content-between px-4 py-1 bg-light" style="height:fit-content" >
@@ -175,7 +175,7 @@ $(document).ready(function(){
 }
 
 
- getLocation();
+
 
 
 </script>

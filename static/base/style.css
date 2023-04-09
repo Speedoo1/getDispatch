@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Thambi+2&family=Raleway&family=Rubik&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
+
 /*              Sass Template           */
 /*  global classes  */
 button, button:focus {
@@ -109,6 +112,41 @@ button, button:focus {
   margin-top: 5px;
   display: block;
 }
+.proposal{
+  width: 500px;
+  padding: 15px 10px;
+  margin-top: 5px;
+  display: block;
+
+}
+/* index2 html design */
+.header2{
+  position: relative;
+  top:25%;
+
+}
+.headertext{
+  font-family: 'Alkatra', cursive;
+  font-size: 105px;
+}
+.previous{
+  padding: 10px 15px;
+  width: 20px;
+  border: 1px solid #333;
+}
+.header-search{
+  padding: 10px 15px; width: 800px;
+}
+
+.fix-header{
+  position:fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+
+
+}
 
 @media screen and (max-width: 980px) {
   .login-input {
@@ -117,4 +155,17 @@ button, button:focus {
       margin-top: 5px;
       display: block;
     }
+    .proposal{
+      width: 300px;
+      margin-top: 5px;
+      display: block;
+
+    }
+    .headertext{
+      font-size: 50px;
+    }
+    .header-search{
+      padding: 10px 15px; width: 350px;
+    }
+
   }
