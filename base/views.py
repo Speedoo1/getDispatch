@@ -323,7 +323,7 @@ def createRide(request):
     if request.method == 'POST':
         newride = ride(username=request.user, phoneNumber=number, rideName=rideName,
                        image=rideImage, preview1=preview1, preview2=preview2,
-                       preview3=preview3, preview4=preview4, amount=amount, localGov=lga, preview5=preview5,
+                       preview3=preview3, preview4=preview4, price=amount, localGov=lga, preview5=preview5,
                        rideDescription=rideDescription, state=state, rideType=rideType)
         if newride:
             messages.info(request, 'Your Ride is still under review')
