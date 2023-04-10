@@ -105,7 +105,7 @@ def proposalDetailsUpdate(request, pk):
         pass
     else:
         return redirect('base:index')
-
+    messages.info(request, 'note: you can edit all this information here in this page')
     goodsName = request.POST.get('goodsName')
     receiverName = request.POST.get('receiverName')
     receiverAddress = request.POST.get('receiverAddress')
@@ -127,9 +127,9 @@ def proposalDetailsUpdate(request, pk):
         getproposal.receiverPhoneNumber = receiverNumber
         getproposal.goodsDescription = goodsDescription
         getproposal.amount = amount
-
+        messages.success(request, 'Proposal Updated Successfully')
         getproposal.save()
-        return redirect('base:proposalSent')
+        return redirect('base:proposalupdate', getproposal.id)
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
 
@@ -484,3 +484,10 @@ def delivered(request, pk):
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
     return render(request, 'base/goodsDeliveredDetails.html', context)
+
+
+def proposalDelete(request, pk):
+    getproposal = proposal.objects.get(id=pk)
+    getproposal.delete()
+    messages.error(request, 'proposal has been deleted successfully')
+    return redirect('base:proposalSent')

@@ -6,10 +6,20 @@
  <div class="container">
         <div class="container" style="background-color: #fff; margin-top: 10%; padding: 10px 15px; width:fit-content ; height:fit-content">
             <div class="text-center">
-                <h2>Proposal Received</h2>
+                <h2>Proposal Sent</h2>
             </div>
             <form class="mt-5" method="post" action="{% url 'base:proposalupdate' getproposal.id %}">
                 {% csrf_token%}
+                 {% for message in messages%}
+
+                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      &nbsp;{{message}}
+
+                  </div>
+                   {%endfor%}
                 <label for=""><strong>Ride Name</strong> </label><br/>
                 <input type="text" class="login-input" value="{{getproposal.rideName}}" readonly="true" name="riderName" ><br/>
                 <label for=""><strong>Rider's Phone number </strong> </label><br/>
@@ -45,7 +55,7 @@
                 <textarea class="login-input" name="goodsDescription" placeholder="Describe the goods in details"  cols="30" rows="5">{{getproposal.goodsDescription}}</textarea><br/>
 
                 <input style="width: 100%;" type="submit" class="btn btn-success"  value="Update Proposal" name="" id="">
-                <a href="" style="width:100%" class="btn btn-danger mt-3">Delete Proposal</a>
+                <a href="{% url 'base:proposal-delete' getproposal.id %}" style="width:100%" class="btn btn-danger mt-3">Delete Proposal</a>
 
                 <br>
                 <!-- <a style="width: 100%; margin-top: 20px;" class="btn btn-secondary disabled" href="">Accept Proposal</a>-->

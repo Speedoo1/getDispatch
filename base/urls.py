@@ -27,5 +27,6 @@ urlpatterns = [
     path('goods-Delivered', views.goodsDelivered, name='goodsDeliver'),
 
     path('my-ride', views.myride, name='my-ride'),
-    path('Delivered/<str:pk>', views.delivered, name='delivered')
+    path('Delivered/<str:pk>', views.delivered, name='delivered'),
+    path('proposal-delete/<str:pk>',views.proposalDelete,name='proposal-delete')
 ]

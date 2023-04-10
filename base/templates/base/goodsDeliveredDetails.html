@@ -8,16 +8,7 @@
             <div class="text-center">
                 <h2>Goods Delivered Details</h2>
             </div>
-             {% for message in messages%}
 
-                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="True">&times;</span>
-                      </button>
-                      &nbsp;{{message}}
-
-                  </div>
-                   {%endfor%}
 
             <form class="mt-5" method="" action="">
                 {% csrf_token%}
