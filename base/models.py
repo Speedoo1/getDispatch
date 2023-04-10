@@ -7,6 +7,7 @@ from django.db import models
 # Create your models here.
 
 class user(AbstractUser):
+    username = models.CharField(max_length=20, blank=True, null=True)
     fullName = models.CharField(max_length=100)
     email = models.EmailField()
     phoneNumber = models.CharField(max_length=20, unique=True)
@@ -52,7 +53,7 @@ class proposal(models.Model):
     senderName = models.CharField(max_length=100, default='empty')
     riderPhoneNumber = models.CharField(max_length=20, default='empty')
     senderEmail = models.EmailField()
-    senderPhoneNumber = models.CharField(max_length=20,default='empty')
+    senderPhoneNumber = models.CharField(max_length=20, default='empty')
     rideTrackId = models.CharField(max_length=100)
     rideType = models.CharField(max_length=50)
     goodsName = models.CharField(max_length=250)
