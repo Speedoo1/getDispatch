@@ -13,7 +13,7 @@ class user(AbstractUser):
     ninslip = models.ImageField()
     verify = models.BooleanField(default=False)
     USERNAME_FIELD = 'phoneNumber'
-    REQUIRED_FIELDS = ['username']
+    
 
 
 class ride(models.Model):
