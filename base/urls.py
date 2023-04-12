@@ -28,5 +28,6 @@ urlpatterns = [
 
     path('my-ride', views.myride, name='my-ride'),
     path('Delivered/<str:pk>', views.delivered, name='delivered'),
-    path('proposal-delete/<str:pk>',views.proposalDelete,name='proposal-delete')
+    path('proposal-delete/<str:pk>', views.proposalDelete, name='proposal-delete'),
+    path('verify-account/', views.verfyaccount, name='verify-account')
 ]

@@ -1,5 +1,6 @@
 import json
 import uuid
+import random as r
 
 import requests
 from django.contrib import messages
@@ -78,13 +79,19 @@ def sendproposal(request, pk):
         receiverNumber = request.POST.get('receiverNumber')
         goodsDescription = request.POST.get('goodsDescription')
         amount = request.POST.get('amount')
-        delivarypassword = str(uuid.uuid4())[:10]
+
+        code = ''
+        for i in range(10):
+            code += str(r.randint(1, 9))
+
+        delivarypin = code
+
         propose = proposal(riderUsername=getrider.username, rideName=getrider.rideName,
                            riderPhoneNumber=getrider.phoneNumber, senderEmail=getuser.email,
                            senderPhoneNumber=getuser.phoneNumber, rideTrackId=getrider.id,
                            rideType=getrider.rideType, goodsName=goodsName, receiverPhoneNumber=receiverNumber,
                            receiverName=receiverName, receiverAddress=receiverAddress, amount=int(amount),
-                           goodsDescription=goodsDescription, deliveryPassword=delivarypassword,
+                           goodsDescription=goodsDescription, deliveryPassword=delivarypin,
                            senderName=getuser.fullName)
         messages.success(request, 'Proposal sent to dispatch Rider')
 
@@ -209,11 +216,11 @@ def acceptproposal(request, pk):
         text = 'Dear ' + getproposal.receiverName + ', you have a package from ' + getproposal.senderName + '\n your package will ' \
                                                                                                             'be ' \
                                                                                                             'deliver to you  soon \nRider Number: ' + str(
-            getproposal.riderPhoneNumber) + '\n Delivery Password is: ' + getproposal.deliveryPassword + ' \n give the delivery ' \
-                                                                                                         'agent the  Delivery password after receiving the package '
+            getproposal.riderPhoneNumber) + '\n Delivery Pin is: ' + getproposal.deliveryPassword + ' \n give the delivery ' \
+                                                                                                         'agent the  Delivery Pin after receiving the package '
         try:
             sendsms = requests.get(
-                'https://portal.nigeriabulksms.com/api/?username=azeezadedeji638@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + str(
+                'https://portal.nigeriabulksms.com/api/?username=speedoo24434@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + str(
                     getproposal.receiverPhoneNumber)).json()
             print(sendsms)
         except:
@@ -282,17 +289,80 @@ def signup(request):
             check = user.objects.get(phoneNumber=number)
         except:
             if password == confirm_password:
-                passwords = make_password(password)
-                check = user(email=email, fullName=full_name, ninslip=nin, phoneNumber=number, password=passwords)
-                check.save()
-                messages.success(request, 'Account created successfully')
-                return redirect('base:login')
+                request.session['email'] = email
+                request.session['full_name'] = full_name
+                request.session['number'] = number
+                request.session['gender'] = gender
+                # request.session['nin'] = nin
+                request.session['password'] = password
+                code = ''
+                for i in range(6):
+                    code += str(r.randint(1, 9))
+                print(code)
+                text = 'DO NOT DISCLOSE. Dear Customer The code for your Phone number authentication is ' + code + '., kindly make sure no one is watching you.'
+
+                try:
+                    sendsms = requests.get(
+                        'https://portal.nigeriabulksms.com/api/?username=azeezadedeji638@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + number).json()
+                    print(sendsms)
+                except:
+                    messages.error(request, 'error getting otp code ')
+                    return 'error'
+                request.session['otp'] = code
+                messages.success(request, 'Verify your Account')
+                return redirect('base:verify-account')
             else:
                 messages.error(request, 'Password doesnt match ')
                 return redirect("base:signup")
         messages.error(request, 'Account Already Exit')
 
     return render(request, 'base/signup.html')
+
+
+def verfyaccount(request):
+    # print(code)
+
+    email = request.session.get('email')
+    full_name = request.session.get('full_name')
+    number = request.session.get('number')
+    nin = request.session.get('nin')
+    password = request.session.get('password')
+    gender = request.session.get('gender')
+    otps = request.session.get('otp')
+
+    if number == '':
+        return redirect('base:signup')
+
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+
+        print('otp code is' + otps)
+        if otps == otp:
+            passwords = make_password(password)
+
+            check = user(email=email, fullName=full_name, ninslip=nin, phoneNumber=number, password=passwords)
+            check.save()
+            request.session['email'] = ''
+            request.session['full_name'] = ''
+            request.session['number'] = ''
+            request.session['gender'] = ''
+            # request.session['nin'] = nin
+            request.session['password'] = ''
+            request.session['otp'] = ''
+            messages.success(request, 'Account created successfully, you can now login.')
+
+            return redirect('base:login')
+        else:
+            request.session['email'] = ''
+            request.session['full_name'] = ''
+            request.session['number'] = ''
+            request.session['gender'] = ''
+            # request.session['nin'] = nin
+            request.session['password'] = ''
+            request.session['otp'] = ''
+            messages.error(request, 'otp code is incorrect')
+            return redirect('base:signup')
+    return render(request, 'base/accountVerification.html')
 
 
 @login_required(login_url='base:login')
@@ -415,7 +485,7 @@ def goodstodeliverpreview(request, pk):
 
             try:
                 sendsms = requests.get(
-                    'https://portal.nigeriabulksms.com/api/?username=azeezadedeji638@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + str(
+                    'https://portal.nigeriabulksms.com/api/?username=speedoo24434@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + str(
                         getproposal.senderPhoneNumber)).json()
                 print(sendsms)
             except:
