@@ -151,6 +151,10 @@
 
 
 <script>
+
+        if(window.history.replaceState){
+ window.history.replaceState(null,null,window.location.href);
+ }
     function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(showPosition);

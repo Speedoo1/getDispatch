@@ -6,7 +6,7 @@ import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -217,7 +217,7 @@ def acceptproposal(request, pk):
                                                                                                             'be ' \
                                                                                                             'deliver to you  soon \nRider Number: ' + str(
             getproposal.riderPhoneNumber) + '\n Delivery Pin is: ' + getproposal.deliveryPassword + ' \n give the delivery ' \
-                                                                                                         'agent the  Delivery Pin after receiving the package '
+                                                                                                    'agent the  Delivery Pin after receiving the package '
         try:
             sendsms = requests.get(
                 'https://portal.nigeriabulksms.com/api/?username=speedoo24434@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + str(
@@ -308,7 +308,7 @@ def signup(request):
                 except:
                     messages.error(request, 'error getting otp code ')
                     return 'error'
-                request.session['otp'] = code
+                request.session['otp'] = make_password(code)
                 messages.success(request, 'Verify your Account')
                 return redirect('base:verify-account')
             else:
@@ -328,16 +328,15 @@ def verfyaccount(request):
     nin = request.session.get('nin')
     password = request.session.get('password')
     gender = request.session.get('gender')
-    otps = request.session.get('otp')
 
-    if number == '':
-        return redirect('base:signup')
+    # if number == '':
+    #     return redirect('base:signup')
 
     if request.method == 'POST':
         otp = request.POST.get('otp')
+        otps = check_password(otp,   request.session.get('otp'))
 
-        print('otp code is' + otps)
-        if otps == otp:
+        if otps == True:
             passwords = make_password(password)
 
             check = user(email=email, fullName=full_name, ninslip=nin, phoneNumber=number, password=passwords)
@@ -353,15 +352,15 @@ def verfyaccount(request):
 
             return redirect('base:login')
         else:
-            request.session['email'] = ''
-            request.session['full_name'] = ''
-            request.session['number'] = ''
-            request.session['gender'] = ''
+            # request.session['email'] = ''
+            # request.session['full_name'] = ''
+            # request.session['number'] = ''
+            # request.session['gender'] = ''
             # request.session['nin'] = nin
-            request.session['password'] = ''
-            request.session['otp'] = ''
+            # request.session['password'] = ''
+            # request.session['otp'] = ''
             messages.error(request, 'otp code is incorrect')
-            return redirect('base:signup')
+            return redirect('base:verify-account')
     return render(request, 'base/accountVerification.html')
 
 
@@ -512,6 +511,7 @@ def goodstodeliverpreview(request, pk):
 
 
 @login_required(login_url='base:login')
+# this method show the list of goods that has been delivered
 def goodsDelivered(request):
     getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(deliver=True))
 
