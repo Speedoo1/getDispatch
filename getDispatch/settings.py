@@ -33,6 +33,8 @@ CSRF_TRUSTED_ORIGINS = ['https://getdispatch-production.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
+    'dbbackup',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,7 +76,8 @@ WSGI_APPLICATION = 'getDispatch.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR/'backup/'}
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -96,7 +99,9 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
+# CRONJOBS = [
+#     ('*/5 * * * *', 'myapp.cron.my_scheduled_job')
+# ]
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
