@@ -19,7 +19,7 @@
 
                   </div>
                    {%endfor%}
-            <form class="mt-5" method="post" action="{% url 'base:login'%}">
+            <form class="mt-5" method="post"  onsubmit="submmit()" action="{% url 'base:login'%}">
                 {% csrf_token %}
                 <label for=""><strong>Phone Number</strong> </label><br/>
                             <input type="number" class="login-input" name="number" id="email" required>
@@ -29,7 +29,7 @@
                             <br/>
                             <input type="checkbox" style="padding: 15px 10px ;" name="" id="">&nbsp;&nbsp;<span>Remind me</span>
                             <br/><br/>
-                            <input type="submit" class="btn btn-success"  value="Login now" name="" >
+                            <input type="submit" class="btn btn-success" id="subb"  value="Login now"  name="" >
                                 <div class="text-right" style="padding: 10px 15px;">
                                     <a href="" class="text-right">Forgot Password</a><br/>
                                 </div>
@@ -44,7 +44,17 @@
 
 
 
+<script>
+ function submmit(){
+alert('form submitted');
+var sub= document.getElementById("subb");
+sub.value='Loading....';
+sub.disabled=true;
 
+
+ }
+
+</script>
 
 {% endblock%}
 </div>

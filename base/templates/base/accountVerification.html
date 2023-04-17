@@ -20,35 +20,8 @@
 
                   </div>
                    {%endfor%}
-            <form class="mt-5" method="post" action="{%url 'base:verify-account'%}" enctype="multipart/form-data">
+            <form class="mt-5" method="post" onsubmit="submmit()" action="{%url 'base:verify-account'%}" enctype="multipart/form-data">
                 {% csrf_token %}
-<!--                <label for=""><strong>Full name</strong> </label><br/>-->
-
-<!--                <input type="text" class="login-input" name="full-name" ><br/>-->
-
-
-
-<!--                <label for=""><strong>Email Address</strong> </label><br/>-->
-<!--                <input type="text" class="login-input" name="email" >-->
-
-
-
-<!--                <br/><br/>-->
-<!--                <label for=""><strong>Phone number</strong> </label><br/>-->
-<!--                <input type="text" class="login-input" name="number" >-->
-<!--                <br><br>-->
-<!--                <label ><b>NIN slip:</b></label>-->
-
-
-<!--                <input class="login-input" type="file" autocomplete="off"   name="nin"  accept="application/jpg, application/png" required><br/>-->
-
-<!--                <label ><b>Gender:</b></label>-->
-<!--                <select class="login-input" name="gender" id="e"  style="display: block; margin-top:12px ;" required>-->
-<!--                           <option value="Male">Male</option>-->
-<!--                           <option value="Female">Female</option>-->
-<!--                </select><br/>-->
-<!--                <label ><b>Password:</b></label>-->
-<!--                <input class="login-input" type="password" autocomplete="off" placeholder="Enter your Password"  name="password" id="password" required><br/>-->
 
                 <label ><b>Enter your Otp code here:</b></label>
                 <input class="login-input" type="number" autocomplete="off" placeholder="Enter your otp here"  name="otp" id="confirm" required>
@@ -58,7 +31,7 @@
                 <hr>
 
                 <br/>
-                <input type="submit" class="btn btn-success"  value="Verify" name="" id="">
+                <input type="submit" id="subb" class="btn btn-success"  value="Verify" name="" id="">
 
             </form>
         </div>
@@ -67,7 +40,16 @@
 
 
 
+<script>
+    function submmit(){
+alert('form submitted');
+var sub= document.getElementById("subb");
+sub.value='Loading....';
+sub.disabled=true;
 
+
+ }
+</script>
 
 
 {% endblock%}

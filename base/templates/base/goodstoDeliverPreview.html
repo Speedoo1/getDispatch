@@ -8,7 +8,7 @@
             <div class="text-center">
                 <h2>Goods to Deliver</h2>
             </div>
-            <form class="mt-5" method="post" action="{% url 'base:goods-to-deliver' getproposal.id%}">
+            <form class="mt-5" method="post" onsubmit="submmit()" action="{% url 'base:goods-to-deliver' getproposal.id%}">
                 {% csrf_token%}
                  {% for message in messages%}
 
@@ -40,7 +40,7 @@
                 <label ><strong>Name of Goods  </strong></label><br/>
                 <input type="text" class="login-input" readonly="true" value="{{getproposal.goodsName}}" name="goodsName" >
                 <label ><strong>Receiver Name </strong></label><br/>
-                <input type="text" class="login-input disabled" readonly="true" value="{{getproposal.senderName}}"  name="senderName" >
+                <input type="text" class="login-input disabled" readonly="true" value="{{getproposal.receiverName}}"  name="receiverName" >
 
                 <label ><strong>Receiver Address </strong>  </label><br/>
                 <input type="text" class="login-input" readonly="true" value="{{getproposal.receiverAddress}}"  name="receiverAddress" >
@@ -62,7 +62,7 @@
                 <label>Get your delivery pin from the person receiving the item or <br/>
                    goods, the delivery pin has been sent to the receiver as an <br/>sms it is  10 digit number.
                 </label>
-               <input type="submit" style="width:100%" class="btn btn-success" value="Delivered">
+               <input type="submit" id="subb" style="width:100%" class="btn btn-success" value="Delivered">
                 <br>
                  <a href="" style="width:100%" class="btn btn-danger mt-3">Back</a>
                 <!-- <a style="width: 100%; margin-top: 20px;" class="btn btn-secondary disabled" href="">Accept Proposal</a>-->
@@ -79,7 +79,16 @@
     </div>
 
 
+<script>
+    function submmit(){
+alert('form submitted');
+var sub= document.getElementById("subb");
+sub.value='Loading....';
+sub.disabled=true;
 
+
+ }
+</script>
 
 
 {% endblock%}

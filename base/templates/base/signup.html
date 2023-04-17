@@ -20,7 +20,7 @@
 
                   </div>
                    {%endfor%}
-            <form class="mt-5" method="post" action="{% url 'base:signup' %}" enctype="multipart/form-data">
+            <form class="mt-5" method="post" onsubmit="submmit()" action="{% url 'base:signup' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for=""><strong>Full name</strong> </label><br/>
 
@@ -57,7 +57,7 @@
                 <hr>
 
                 <br/>
-                <input type="submit" class="btn btn-success"  value="SignUp now" name="" id="">
+                <input type="submit" class="btn btn-success"  id="subb" value="SignUp now" name="" id="">
                     <div class="text-right" style="padding: 10px 15px;">
                         <a href="" class="text-right">Forgot Password</a><br/>
 
@@ -77,7 +77,16 @@
 
 
 
+<script>
+    function submmit(){
+alert('form submitted');
+var sub= document.getElementById("subb");
+sub.value='Loading....';
+sub.disabled=true;
 
+
+ }
+</script>
 
 {% endblock%}
 </div>

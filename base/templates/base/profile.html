@@ -3,12 +3,12 @@
 {%load static %}
 
 {% block body%}
- <div class="container">
+<div class="container">
         <div class="container" style="background-color: #fff; margin-top: 10%; padding: 10px 15px; width:fit-content ; height:fit-content">
             <div class="text-center">
-                <h2>Create Ride</h2>
+                <h2>My Profile</h2>
             </div>
-            <form class="mt-5" method="post" onsubmit="submmit()" action="{%url 'base:ride'%}" enctype="multipart/form-data">
+            <form class="mt-5" method="post" action="{%url 'base:ride'%}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for=""><strong>Ride Name </strong> </label><br/>
                 <input type="text" class="login-input" name="rideName" ><br/>
@@ -73,7 +73,7 @@
                 <label for=""><strong>Ride Description</strong></label><br/>
                 <textarea class="login-input" name="rideDescription"  cols="30" rows="10"></textarea><br/>
 
-                <input style="width: 100%;" type="submit" id="subb" class="btn btn-success"  value="Create Ride" name="" id="">
+                <input style="width: 100%;" type="submit" class="btn btn-success"  value="Create Ride" name="" id="">
 
 
 
@@ -86,20 +86,5 @@
 
     </div>
 
-<script>
-    function submmit(){
-alert('form submitted');
-var sub= document.getElementById("subb");
-sub.value='Loading....';
-sub.disabled=true;
-
-
- }
-</script>
-
-
-
-
-
-{% endblock%}
+    {%endblock%}
 </div>

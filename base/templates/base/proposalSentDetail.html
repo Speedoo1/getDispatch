@@ -8,7 +8,7 @@
             <div class="text-center">
                 <h2>Proposal Sent</h2>
             </div>
-            <form class="mt-5" method="post" action="{% url 'base:proposalupdate' getproposal.id %}">
+            <form class="mt-5" method="post" onsubmit="submmit()" action="{% url 'base:proposalupdate' getproposal.id %}">
                 {% csrf_token%}
                  {% for message in messages%}
 
@@ -54,7 +54,7 @@
                 <label for=""><strong>Goods  Description</strong></label><br/>
                 <textarea class="login-input" name="goodsDescription" placeholder="Describe the goods in details"  cols="30" rows="5">{{getproposal.goodsDescription}}</textarea><br/>
 
-                <input style="width: 100%;" type="submit" class="btn btn-success"  value="Update Proposal" name="" id="">
+                <input style="width: 100%;" type="submit" id="subb" class="btn btn-success"  value="Update Proposal" name="" id="">
                 <a href="{% url 'base:proposal-delete' getproposal.id %}" style="width:100%" class="btn btn-danger mt-3">Delete Proposal</a>
 
                 <br>
@@ -72,7 +72,16 @@
     </div>
 
 
+<script>
+    function submmit(){
+alert('form submitted');
+var sub= document.getElementById("subb");
+sub.value='Loading....';
+sub.disabled=true;
 
+
+ }
+</script>
 
 
 {% endblock%}

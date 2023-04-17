@@ -90,7 +90,7 @@ def sendproposal(request, pk):
                            riderPhoneNumber=getrider.phoneNumber, senderEmail=getuser.email,
                            senderPhoneNumber=getuser.phoneNumber, rideTrackId=getrider.id,
                            rideType=getrider.rideType, goodsName=goodsName, receiverPhoneNumber=receiverNumber,
-                           receiverName=receiverName, receiverAddress=receiverAddress, amount=int(amount),
+                           receiverName=receiverName, receiverAddress=receiverAddress, amount=amount,
                            goodsDescription=goodsDescription, deliveryPassword=delivarypin,
                            senderName=getuser.fullName)
         messages.success(request, 'Proposal sent to dispatch Rider')
@@ -334,7 +334,7 @@ def verfyaccount(request):
 
     if request.method == 'POST':
         otp = request.POST.get('otp')
-        otps = check_password(otp,   request.session.get('otp'))
+        otps = check_password(otp, request.session.get('otp'))
 
         if otps == True:
             passwords = make_password(password)
@@ -561,3 +561,7 @@ def proposalDelete(request, pk):
     getproposal.delete()
     messages.error(request, 'proposal has been deleted successfully')
     return redirect('base:proposalSent')
+
+
+def profile(request):
+    return render(request, 'base/profile.html')

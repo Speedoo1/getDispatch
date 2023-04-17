@@ -8,7 +8,7 @@
             <div class="text-center">
                 <h2>Send Proposal</h2>
             </div>
-            <form class="mt-5" method="post" action="{% url 'base:sendproposal' getrider.id %}">
+            <form class="mt-5" method="post" onsubmit="submmit()" action="{% url 'base:sendproposal' getrider.id %}">
                 {% csrf_token%}
                 <label for=""><strong>Ride Name</strong> </label><br/>
                 <input type="text" class="login-input" value="{{getrider.rideName}}" readonly="true" name="riderName" ><br/>
@@ -44,7 +44,7 @@
                 <label for=""><strong>Goods  Description</strong></label><br/>
                 <textarea class="login-input"  name="goodsDescription" placeholder="Describe the goods in details"  cols="30" rows="5"></textarea><br/>
 
-                <input style="width: 100%;" type="submit" class="btn btn-success"  value="Send Proposal" name="" id="">
+                <input style="width: 100%;" type="submit" id="subb" class="btn btn-success"  value="Send Proposal" name="" id="">
                 <br>
                 <!-- <a style="width: 100%; margin-top: 20px;" class="btn btn-secondary disabled" href="">Accept Proposal</a>-->
 
@@ -59,7 +59,16 @@
 
     </div>
 
+<script>
+    function submmit(){
+alert('form submitted');
+var sub= document.getElementById("subb");
+sub.value='Loading....';
+sub.disabled=true;
 
+
+ }
+</script>
 
 
 
