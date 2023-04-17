@@ -21,18 +21,22 @@
                    {%endfor%}
             <form class="mt-5" method="post"  onsubmit="submmit()" action="{% url 'base:login'%}">
                 {% csrf_token %}
+
                 <label for=""><strong>Phone Number</strong> </label><br/>
-                            <input type="number" class="login-input" name="number" id="email" required>
+                            <input type="number" class="login-input form-control-md" name="number" id="email" required>
                             <br>
+
                             <label for=""><strong>Password</strong> </label>
-                            <input type="password" class="login-input" name="password" id="password">
+                            <input type="password" class="login-input form-control-md" name="password" id="password">
                             <br/>
+
                             <input type="checkbox" style="padding: 15px 10px ;" name="" id="">&nbsp;&nbsp;<span>Remind me</span>
                             <br/><br/>
                             <input type="submit" class="btn btn-success" id="subb"  value="Login now"  name="" >
                                 <div class="text-right" style="padding: 10px 15px;">
                                     <a href="" class="text-right">Forgot Password</a><br/>
                                 </div>
+
 
 
 
