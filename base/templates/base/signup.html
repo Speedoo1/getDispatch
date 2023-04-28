@@ -38,10 +38,7 @@
                 <input type="text" class="login-input" name="number" >
                 <br><br>
                 <label ><b>NIN slip:</b></label>
-
-
-                <input class="login-input" type="file" autocomplete="off"   name="nin"  accept="application/jpg, application/png" required><br/>
-
+                <input class="login-input" type="file" autocomplete="off"   name="nin"  accept="application/jpeg, application/png"><br/>
                 <label ><b>Gender:</b></label>
                 <select class="login-input" name="gender" id="e"  style="display: block; margin-top:12px ;" required>
                            <option value="Male">Male</option>
@@ -65,9 +62,6 @@
 
 
                 <span  style="margin-top: 12px;">Already have an account</span>&nbsp;<a href="{% url 'base:login'%}">Login</a>
-
-
-
 
             </form>
         </div>

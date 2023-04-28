@@ -130,8 +130,9 @@
               <hr>
               <!-- owl carousel -->
                 <div class="owl-carousel owl-theme" >
-                  <div class="item py-2 " >
                      {% for i in rides %}
+                  <div class="item py-2  ml-3" >
+
             <div class="">
              <div class="product font-rale">
                       <a href="#"><img src="{{i.image.url}}" alt="product1" height="175"  style="width:100%" class=""></a>
@@ -157,8 +158,11 @@
                       </div>
                     </div>
             </div>
-        {%endfor%}
+
+
+
                   </div>
+                     {%endfor%}
                 </div>
               <!-- !owl carousel -->
             </div>
@@ -179,6 +183,9 @@ var mapvar=document.getElementById('map');
 
 
 function riderlocation(){
+
+
+
   $(document).ready(function(){
     $.ajax({
   type:'GET',
