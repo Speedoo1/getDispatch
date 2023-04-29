@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -147,12 +148,19 @@ def proposalDetailsUpdate(request, pk):
 def logins(request):
     number = request.POST.get('number')
     passwords = request.POST.get('password')
+    if request.method == 'GET':
+        cache.set('next', request.GET.get('next', None))
     if request.method == 'POST':
         getuser = authenticate(request, username=number, password=passwords)
         if getuser:
-            next = request.GET.get('next')
+            next_url = cache.get('next')
             login(request, getuser)
-            return redirect('base:index')
+            if next_url:
+                cache.delete('next')
+                return redirect(next_url)
+            else:
+                return redirect('base:index')
+
         else:
             messages.error(request, 'user credentials is not  correct')
     return render(request, 'base/login.html')
