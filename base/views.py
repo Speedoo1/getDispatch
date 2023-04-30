@@ -34,20 +34,21 @@ def getgeo(request):
 def index(request):
     if request.method == 'GET':
         search = request.GET.get('search')
+        # | Q(price__range=(0, search))
         if search:
             rides = ride.objects.filter(Q(verified=True) &
                                         (Q(rideName__contains=search) | Q(state__contains=search) | Q(
-                                            rideType__contains=search) | Q(price__range=(1,search)))).order_by('?')
+                                            rideType__contains=search) )).order_by('?')
             p = Paginator(rides, 20)
             page = request.GET.get('page')
             page_pagination = p.get_page(page)
+
         else:
 
             rides = ride.objects.filter(verified=True).order_by('?')
             p = Paginator(rides, 20)
             page = request.GET.get('page')
             page_pagination = p.get_page(page)
-
 
     try:
 
@@ -68,7 +69,7 @@ def index(request):
         goodsdeliver = '0'
         goodstosend = '0'
 
-    context = {'rides': page_pagination, 'search': search, 'proposalr': proposalr, 'goodstosend': goodstosend,
+    context = {'rides': page_pagination, 'proposalr': proposalr, 'goodstosend': goodstosend,
                'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver
                }
