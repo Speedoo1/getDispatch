@@ -32,28 +32,43 @@ def getgeo(request):
 
 # this is the home page where you can see the list of available dispatch rider
 def index(request):
-    rides = ride.objects.filter(verified=True)
-    p = Paginator(rides, 20)
-    page = request.GET.get('page')
-    page_pagination = p.get_page(page)
-    proposalr = '0'
-    proposals = '0'
-    goodsent = '0'
-    goodsdeliver = '0'
-    goodstosend = '0'
+    if request.method == 'GET':
+        search = request.GET.get('search')
+        if search:
+            rides = ride.objects.filter(Q(verified=True) &
+                                        (Q(rideName__contains=search) | Q(state__contains=search) | Q(
+                                            rideType__contains=search) | Q(price__range=(1,search)))).order_by('?')
+            p = Paginator(rides, 20)
+            page = request.GET.get('page')
+            page_pagination = p.get_page(page)
+        else:
+
+            rides = ride.objects.filter(verified=True).order_by('?')
+            p = Paginator(rides, 20)
+            page = request.GET.get('page')
+            page_pagination = p.get_page(page)
+
+
     try:
-        proposalr = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)).count
-        proposals = proposal.objects.filter(Q(senderName=request.user.phoneNumber) & Q(accepted=False)).count
+
+        proposals = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=False)).count
+
+        proposalr = proposal.objects.filter(Q(riderUsername=request.user.phoneNumber) & Q(accepted=False)).count
 
         goodsent = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber)
                                            & Q(accepted=True)).count
-        goodstosend = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).count
-        goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
+        goodstosend = proposal.objects.filter(
+            Q(riderUsername=request.user.phoneNumber) & Q(accepted=True) & Q(deliver=False)).count
+        goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user.phoneNumber)
                                                & Q(deliver=True)).count
     except:
-        pass
+        proposalr = '0'
+        proposals = '0'
+        goodsent = '0'
+        goodsdeliver = '0'
+        goodstosend = '0'
 
-    context = {'rides': page_pagination, 'proposalr': proposalr, 'goodstosend': goodstosend,
+    context = {'rides': page_pagination, 'search': search, 'proposalr': proposalr, 'goodstosend': goodstosend,
                'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver
                }
@@ -146,6 +161,11 @@ def proposalDetailsUpdate(request, pk):
 
 # this method make register user to login
 def logins(request):
+    goodstosend = "0"
+    proposals = "0"
+    proposalr = '0'
+    goodsent = '0'
+    goodsdeliver = '0'
     number = request.POST.get('number')
     passwords = request.POST.get('password')
     if request.method == 'GET':
@@ -163,7 +183,10 @@ def logins(request):
 
         else:
             messages.error(request, 'user credentials is not  correct')
-    return render(request, 'base/login.html')
+    context = {'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
+               'proposals': proposals, 'goodsdeliver': goodsdeliver}
+
+    return render(request, 'base/login.html', context)
 
 
 @login_required(login_url='base:login')
