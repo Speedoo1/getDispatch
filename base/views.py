@@ -34,11 +34,13 @@ def getgeo(request):
 def index(request):
     if request.method == 'GET':
         search = request.GET.get('search')
+
         # | Q(price__range=(0, search))
         if search:
             rides = ride.objects.filter(Q(verified=True) &
                                         (Q(rideName__contains=search) | Q(state__contains=search) | Q(
-                                            rideType__contains=search) )).order_by('?')
+                                            rideType__contains=search))).order_by('?')
+            search = search
             p = Paginator(rides, 20)
             page = request.GET.get('page')
             page_pagination = p.get_page(page)
@@ -71,7 +73,7 @@ def index(request):
 
     context = {'rides': page_pagination, 'proposalr': proposalr, 'goodstosend': goodstosend,
                'goodsent': goodsent,
-               'proposals': proposals, 'goodsdeliver': goodsdeliver
+               'proposals': proposals, 'search': search, 'goodsdeliver': goodsdeliver
                }
     return render(request, 'base/index2.html', context)
 
@@ -168,11 +170,12 @@ def logins(request):
     goodsent = '0'
     goodsdeliver = '0'
     number = request.POST.get('number')
+    print(number)
     passwords = request.POST.get('password')
     if request.method == 'GET':
         cache.set('next', request.GET.get('next', None))
     if request.method == 'POST':
-        getuser = authenticate(request, username=number, password=passwords)
+        getuser = authenticate(request, username=number.replace('+234', '0'), password=passwords)
         if getuser:
             next_url = cache.get('next')
             login(request, getuser)
@@ -309,7 +312,7 @@ def goodSent(request):
 def signup(request):
     full_name = request.POST.get('full-name')
     email = request.POST.get('email')
-    number = request.POST.get('number')
+    number = request.POST.get('number'.replace('+234', '0'))
     nin = request.FILES.get('nin')
     gender = request.POST.get('gender')
     password = request.POST.get('password')
@@ -318,12 +321,12 @@ def signup(request):
     if request.method == 'POST':
 
         try:
-            check = user.objects.get(phoneNumber=number)
+            check = user.objects.get(phoneNumber=number.replace('+234', '0'))
         except:
             if password == confirm_password:
                 request.session['email'] = email
                 request.session['full_name'] = full_name
-                request.session['number'] = number
+                request.session['number'] = number.replace('+234', '0')
                 request.session['gender'] = gender
                 # request.session['nin'] = nin
                 request.session['password'] = password

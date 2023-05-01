@@ -8,9 +8,11 @@
             <p>You can deliver your goods to your potential customer easily</p>
             <p>we make dispatch Rider more easy to find </p>
             <div class="">
-                <form class="m-auto" action="{% url 'base:index' %}" method="get" value="{{search}}" style="width: fit-content;" >
+                <form class="m-auto" action="{% url 'base:index' %}" method="get"  style="width: fit-content;" >
                     <div class="input-group">
-                      <input type="search"  class="header-search" name="search"  placeholder="Search here by  State, Ride Name, Ride Type">
+                      <input type="search"  class="header-search" name="search" value="" placeholder="{%if search%}{{search}}
+                        {%else%}Search here by  State, Ride Name, Ride Type
+                        {%endif%}">
                      <!-- <div class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                             <i class="fa fa-search"></i>
