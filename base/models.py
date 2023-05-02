@@ -14,13 +14,12 @@ class user(AbstractUser):
     ninslip = models.ImageField()
     verify = models.BooleanField(default=False)
     USERNAME_FIELD = 'phoneNumber'
-    
 
 
 class ride(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
 
-    username = models.ForeignKey(user, on_delete=models.CASCADE)
+    username = models.CharField(max_length=50)
     rideName = models.CharField(max_length=100)
     rideType = models.CharField(max_length=50)
 
@@ -67,3 +66,6 @@ class proposal(models.Model):
     update = models.DateTimeField(auto_now=True)
     deliver = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.goodsName[:10] + ' : ' + str(self.id)

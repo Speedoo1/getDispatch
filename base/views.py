@@ -1,7 +1,7 @@
 import json
 import uuid
 import random as r
-
+from django.contrib import admin
 import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -14,6 +14,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from base.admin import proposalAdmin
 from base.models import user, ride, proposal
 
 
@@ -32,6 +33,9 @@ def getgeo(request):
 
 # this is the home page where you can see the list of available dispatch rider
 def index(request):
+    # dd = proposalAdmin(proposal)
+    # dd.exclude = ['deliveryPassword']
+    # admin.site.register(proposal)
     if request.method == 'GET':
         search = request.GET.get('search')
 
@@ -204,7 +208,7 @@ def proposalReceive(request):
     goodstosend = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).count
     goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
                                            & Q(deliver=True)).count
-    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)
+    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False).order_by('-update')
 
                                           )
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
@@ -221,7 +225,8 @@ def proposalSent(request):
     goodsent = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=True)).count
     goodstosend = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).count
     goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user) & Q(deliver=True)).count
-    sentproposal = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=False))
+    sentproposal = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=False)).order_by(
+        '-update')
     context = {'sentproposal': sentproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'goodsdeliver': goodsdeliver, 'proposals': proposals}
     return render(request, 'base/proposalSent.html', context)
@@ -286,7 +291,8 @@ def goodstoDeliver(request):
     goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
                                            & Q(deliver=True)).count
 
-    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False))
+    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).order_by(
+        '-update')
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
     return render(request, 'base/goodstoDeliver.html', context)
@@ -303,7 +309,8 @@ def goodSent(request):
 
     goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
                                            & Q(deliver=True)).count
-    getproposal = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=True))
+    getproposal = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=True)).order_by(
+        '-update')
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
     return render(request, 'base/goodSent.html', context)
@@ -425,7 +432,7 @@ def createRide(request):
     lga = request.POST.get('lga')
 
     if request.method == 'POST':
-        newride = ride(username=request.user, phoneNumber=number, rideName=rideName,
+        newride = ride(username=request.user.phoneNumber, phoneNumber=number, rideName=rideName,
                        image=rideImage, preview1=preview1, preview2=preview2,
                        preview3=preview3, preview4=preview4, price=amount, localGov=lga, preview5=preview5,
                        rideDescription=rideDescription, state=state, rideType=rideType)
@@ -548,7 +555,7 @@ def goodstodeliverpreview(request, pk):
 @login_required(login_url='base:login')
 # this method show the list of goods that has been delivered
 def goodsDelivered(request):
-    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(deliver=True))
+    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(deliver=True)).order_by('-update')
 
     proposalr = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)).count
     proposals = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=False)).count
