@@ -1,5 +1,10 @@
 <div style="background-color: darkgrey;">
     {% extends 'base/navbar.html'%}
+      {% block goods-to-deliver %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'base:onDelivary' %}">Goods to Deliver ({{goodstosend}}) </a>
+                </li>
+                  {%endblock%}
 {%load static %}
 
 {% block body%}
@@ -31,6 +36,8 @@
 
             </div>
             <hr style="color: #333;"/>
+            {%empty%}
+            <h4>You have no package to deliver yet kindly hold on you<br/> might get a call for delivery, you can also get a delivery message<br/>   through (get customer page) </h4>
             {%endfor%}
 
 

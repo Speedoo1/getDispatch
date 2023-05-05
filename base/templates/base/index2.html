@@ -1,6 +1,11 @@
 {% extends 'base/navbar.html'%}
+{% block homes %}<li class="nav-item active ">
+                  <a class="nav-link" href="{% url 'base:index' %}">Home</a>
+                </li>
+                {% endblock %}
 {%load static %}
 {% block body%}
+
  <div style="background-image: url(https://th.bing.com/th/id/R.94d4fa24b87b36c6a57dab03ee1eefe8?rik=oTXv33o4xRAv9A&pid=ImgRaw&r=0); background-position: center; color:#fff ; background-size: cover; height: 500px;"  class="text-center">
 
         <div class="header2">

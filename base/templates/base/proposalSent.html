@@ -1,5 +1,10 @@
 <div style="background-color: darkgrey;">
     {% extends 'base/navbar.html'%}
+    {% block proposal-sent%}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'base:proposalSent'%}">Proposal Sent({{proposals}})</a>
+                  </li>
+                  {%endblock%}
 {%load static %}
 
 {% block body%}

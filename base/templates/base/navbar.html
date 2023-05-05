@@ -46,30 +46,40 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav m-auto font-rubik">
-                   <li class="nav-item active">
+                {% block homes %}<li class="nav-item ">
                   <a class="nav-link" href="{% url 'base:index' %}">Home</a>
                 </li>
-
-                <li class="nav-item active">
+                {%endblock%}
+                  {% block good_sent%}
+                <li class="nav-item">
                   <a class="nav-link" href="{% url 'base:goodSent'%}">Goods Sent ({{goodsent}})</a>
                 </li>
+                  {%endblock%}
+                  {% block goods-to-deliver %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'base:onDelivary' %}">Goods to Deliver ({{goodstosend}}) </a>
                 </li>
+                  {%endblock%}
+                  {% block goods_deliver%}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'base:goodsDeliver'%}">Goods Deliver ({{goodsdeliver}})</a>
                 </li>
+                  {% endblock%}
+                  {%block my_ride%}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'base:my-ride'%}">My Ride</a>
                   </li>
-
+                  {% endblock%}
+                  {% block proposal_received%}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'base:proposal-receive'%}">Proposal Received ({{proposalr}})</a>
                   </li>
-
+                  {%endblock%}
+                  {% block proposal-sent%}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'base:proposalSent'%}">Proposal Sent({{proposals}})</a>
                   </li>
+                  {%endblock%}
                    <li class="nav-item ">
                   <a class="nav-link" href="{% url 'base:index' %}">Get Customer</a>
                 </li>

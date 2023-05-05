@@ -42,8 +42,9 @@ def index(request):
         # | Q(price__range=(0, search))
         if search:
             rides = ride.objects.filter(Q(verified=True) &
-                                        (Q(rideName__contains=search) | Q(state__contains=search) | Q(
-                                            rideType__contains=search))).order_by('?')
+                                        (Q(rideName__icontains=search) | Q(state__icontains=search) | Q(
+                                            rideDescription__icontains=search) | Q(
+                                            rideType__icontains=search))).order_by('?')
             search = search
             p = Paginator(rides, 20)
             page = request.GET.get('page')
@@ -208,9 +209,8 @@ def proposalReceive(request):
     goodstosend = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).count
     goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
                                            & Q(deliver=True)).count
-    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False).order_by('-update')
+    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)).order_by('-update')
 
-                                          )
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
     return render(request, 'base/proposalReceive.html', context)
@@ -555,15 +555,17 @@ def goodstodeliverpreview(request, pk):
 @login_required(login_url='base:login')
 # this method show the list of goods that has been delivered
 def goodsDelivered(request):
-    getproposal = proposal.objects.filter(Q(riderUsername=request.user) & Q(deliver=True)).order_by('-update')
+    getproposal = proposal.objects.filter(Q(riderUsername=request.user.phoneNumber) & Q(deliver=True)).order_by(
+        '-update')
 
     proposalr = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)).count
     proposals = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=False)).count
 
     goodsent = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber)
                                        & Q(accepted=True)).count
-    goodstosend = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).count
-    goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
+    goodstosend = proposal.objects.filter(
+        Q(riderUsername=request.user.phoneNumber) & Q(accepted=True) & Q(deliver=False)).count
+    goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user.phoneNumber)
                                            & Q(deliver=True)).count
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}

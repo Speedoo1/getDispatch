@@ -1,5 +1,10 @@
 <div style="background-color: darkgrey;">
     {% extends 'base/navbar.html'%}
+     {% block good_sent%}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'base:goodSent'%}">Goods Sent ({{goodsent}})</a>
+                </li>
+                  {%endblock%}
 {%load static %}
 
 {% block body%}

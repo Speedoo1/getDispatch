@@ -1,5 +1,10 @@
 <div style="background-color: darkgrey;">
     {% extends 'base/navbar.html'%}
+     {%block my_ride%}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'base:my-ride'%}">My Ride</a>
+                  </li>
+                  {% endblock%}
 {%load static %}
 
 {% block body%}
