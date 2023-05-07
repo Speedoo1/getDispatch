@@ -30,5 +30,7 @@ urlpatterns = [
     path('Delivered/<str:pk>', views.delivered, name='delivered'),
     path('proposal-delete/<str:pk>', views.proposalDelete, name='proposal-delete'),
     path('verify-account/', views.verfyaccount, name='verify-account'),
-    path('profile', views.profile, name='profile')
+    path('profile', views.profile, name='profile'),
+    path('reset-password', views.forgetPassword, name='forgetPassword'),
+    path('reset-password-verification', views.resetPasswordVerify, name='reset-password-verify')
 ]

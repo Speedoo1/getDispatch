@@ -169,6 +169,8 @@ def proposalDetailsUpdate(request, pk):
 
 # this method make register user to login
 def logins(request):
+    if request.user.is_authenticated:
+        return redirect('base:index')
     goodstosend = "0"
     proposals = "0"
     proposalr = '0'
@@ -609,3 +611,55 @@ def proposalDelete(request, pk):
 
 def profile(request):
     return render(request, 'base/profile.html')
+
+
+def forgetPassword(request):
+    if request.user.is_authenticated:
+        return redirect('base:index')
+    if request.method == 'POST':
+        number = request.POST.get('number')
+        try:
+            user.objects.get(phoneNumber=number)
+        except:
+            messages.error(request, 'Number does not exit')
+            return render(request, 'base/resetPassword.html')
+        request.session['number'] = number.replace('+234', '0')
+        code = ''
+        for i in range(6):
+            code += str(r.randint(1, 9))
+
+        text = 'DO NOT DISCLOSE. Dear Customer The code for your Phone number authentication is ' + code + '., kindly make sure no one is watching you.'
+
+        try:
+            sendsms = requests.get(
+                'https://portal.nigeriabulksms.com/api/?username=azeezadedeji638@gmail.com&password=adedejiboy1st.&message=' + text + '&sender=GDRider&mobiles=' + number).json()
+            print(sendsms)
+        except:
+            messages.error(request, 'error getting otp code ')
+            return 'error'
+        request.session['otp'] = make_password(code)
+        messages.success(request, 'Verify your Account')
+        return redirect('base:reset-password-verify')
+    return render(request, 'base/resetPassword.html')
+
+
+def resetPasswordVerify(request):
+    if request.user.is_authenticated:
+        return redirect('base:index')
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        ps = request.POST.get('password')
+        passwords = make_password(ps)
+        otps = check_password(otp, request.session.get('otp'))
+        if otps:
+            userid = user.objects.get(phoneNumber=request.session.get('number'))
+            userid.password = passwords
+            userid.save()
+            messages.success(request, 'Password change successfully')
+            request.session['number'] = ''
+            request.session['otp'] = ''
+            return redirect('base:login')
+        else:
+            messages.error(request, 'incorrect  otp code')
+
+    return render(request, 'base/resetPasswordVerification.html')
