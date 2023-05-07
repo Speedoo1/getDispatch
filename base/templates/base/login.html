@@ -25,8 +25,11 @@
                 <label for=""><strong>Phone Number</strong> </label><br/>
                             <input type="tel" class="login-input form-control-md" name="number" id="email" required>
                             <br>
+                            <div class="d-flex">
+                                <label for=""><strong>Password</strong> </label>  <span class="ml-auto btn" id="show"  onclick="paas()" style="">Show Password</span>
 
-                            <label for=""><strong>Password</strong> </label>
+                            </div>
+
                             <input type="password" class="login-input form-control-md" name="password" id="password">
                             <br/>
 
@@ -49,16 +52,33 @@
 
 
 <script>
- function submmit(){
+
+function submmit(){
 
 var sub= document.getElementById("subb");
 sub.value='Loading....';
-sub.disabled=true;
+sub.disabled=true;}
+count=0;
+function paas(){
+count++
+ var txt= document.getElementById('password');
+  var hide= document.getElementById("show");
+ switch(count){
+ case 1:
+  txt.type='text';
+  hide.innerHTML='Hide Password';
+    break;
+ case 2:
+ txt.type='password';
+ hide.innerHTML='Show  Password';
+ count=0;
+ break
+
+     }
 
 
  }
-
 </script>
 
-{% endblock%}
+{%endblock%}
 </div>

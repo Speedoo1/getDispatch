@@ -44,11 +44,17 @@
                            <option value="Male">Male</option>
                            <option value="Female">Female</option>
                 </select><br/>
-                <label ><b>Password:</b></label>
-                <input class="login-input form-control-md" type="password" autocomplete="off" placeholder="Enter your Password"  name="password" id="password" required><br/>
+                <div class="d-flex">
+                    <label for=""><strong>Password</strong> </label>  <span class="ml-auto btn" id="show1"  onclick="paas('password1','show1')" style="">Show Password</span>
 
-                <label ><b>Confirm Password:</b></label>
-                <input class="login-input form-control-md" type="password" autocomplete="off" placeholder="Enter your secret Password again"  name="confirm_password" id="confirm" required>
+                </div>
+                <input class="login-input form-control-md" type="password" autocomplete="off" placeholder="Enter your Password"  name="password" id="password1" required><br/>
+
+                 <div class="d-flex">
+                                <label for=""><strong>Confirm Password</strong> </label>  <span class="ml-auto btn" id="show2"  onclick="paas('password2','show2')" style="">Show Password</span>
+
+                            </div>
+                <input class="login-input form-control-md" type="password" autocomplete="off" placeholder="Enter your secret Password again"  name="confirm_password" id="password2" required>
 
 
                 <hr>
@@ -77,6 +83,25 @@
 var sub= document.getElementById("subb");
 sub.value='Loading....';
 sub.disabled=true;
+}
+count=0;
+
+function paas(id1, id2){
+count++
+var p1=id1
+var p2=id2
+ var txt= document.getElementById(p1);
+  var hide= document.getElementById(p2);
+ switch(count){
+ case 1:
+  txt.type='text';
+  hide.innerHTML='Hide Password';
+    break;
+ case 2:
+ txt.type='password';
+ hide.innerHTML='Show  Password';
+ count=0;
+ break;}
 
 
  }
