@@ -86,6 +86,7 @@ def index(request):
 @login_required(login_url='base:login')
 # this method allow login users to send proposal to a dispatch rider
 def sendproposal(request, pk):
+    used = user.objects.get(phoneNumber=request.user.phoneNumber)
     getrider = ride.objects.get(id=pk)
     getuser = user.objects.get(email=request.user.email)
     proposalr = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)).count
@@ -109,21 +110,25 @@ def sendproposal(request, pk):
             code += str(r.randint(1, 9))
 
         delivarypin = code
+        if int(amount) <= int(used.wallet):
+            used.wallet = int(used.wallet) - int(amount)
+            used.save()
+            propose = proposal(riderUsername=getrider.username, rideName=getrider.rideName,
+                               riderPhoneNumber=getrider.phoneNumber, senderEmail=getuser.email,
+                               senderPhoneNumber=getuser.phoneNumber, rideTrackId=getrider.id,
+                               rideType=getrider.rideType, goodsName=goodsName, receiverPhoneNumber=receiverNumber,
+                               receiverName=receiverName, receiverAddress=receiverAddress, amount=amount,
+                               goodsDescription=goodsDescription, deliveryPassword=delivarypin,
+                               senderName=getuser.fullName)
+            messages.success(request, 'Proposal sent to dispatch Rider')
 
-        propose = proposal(riderUsername=getrider.username, rideName=getrider.rideName,
-                           riderPhoneNumber=getrider.phoneNumber, senderEmail=getuser.email,
-                           senderPhoneNumber=getuser.phoneNumber, rideTrackId=getrider.id,
-                           rideType=getrider.rideType, goodsName=goodsName, receiverPhoneNumber=receiverNumber,
-                           receiverName=receiverName, receiverAddress=receiverAddress, amount=amount,
-                           goodsDescription=goodsDescription, deliveryPassword=delivarypin,
-                           senderName=getuser.fullName)
-        messages.success(request, 'Proposal sent to dispatch Rider')
-
-        propose.save()
-        return redirect('base:proposalSent')
+            propose.save()
+            return redirect('base:proposalSent')
+        else:
+            messages.error(request, 'your wallet balance is too low for the rider fee')
 
     context = {'getrider': getrider, 'getuser': getuser, 'proposalr': proposalr, 'goodstosend': goodstosend,
-               'goodsent': goodsent,
+               'goodsent': goodsent, 'used': used,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
     return render(request, 'base/sendProposal.html', context)
 
@@ -322,7 +327,9 @@ def signup(request):
     full_name = request.POST.get('full-name')
     email = request.POST.get('email')
     number = request.POST.get('number'.replace('+234', '0'))
-    nin = request.FILES.get('nin')
+    state = request.POST.get('state')
+    lga = request.POST.get('lga')
+    address = request.POST.get('home')
     gender = request.POST.get('gender')
     password = request.POST.get('password')
     confirm_password = request.POST.get('confirm_password')
@@ -337,7 +344,10 @@ def signup(request):
                 request.session['full_name'] = full_name
                 request.session['number'] = number.replace('+234', '0')
                 request.session['gender'] = gender
-                # request.session['nin'] = nin
+
+                request.session['state'] = state
+                request.session['address'] = address
+                request.sesseion['lga'] = lga
                 request.session['password'] = password
                 code = ''
                 for i in range(6):
@@ -369,9 +379,12 @@ def verfyaccount(request):
     email = request.session.get('email')
     full_name = request.session.get('full_name')
     number = request.session.get('number')
-    nin = request.session.get('nin')
+
     password = request.session.get('password')
     gender = request.session.get('gender')
+    address = request.session.get('address')
+    state = request.session.get('state')
+    lga = request.session.get('lga')
 
     # if number == '':
     #     return redirect('base:signup')
@@ -383,13 +396,18 @@ def verfyaccount(request):
         if otps == True:
             passwords = make_password(password)
 
-            check = user(email=email, fullName=full_name, ninslip=nin, phoneNumber=number, password=passwords)
+            check = user(email=email, state=state, address=address, localGoverment=lga, gender=gender,
+                         fullName=full_name,
+                         phoneNumber=number,
+                         password=passwords)
             check.save()
             request.session['email'] = ''
             request.session['full_name'] = ''
             request.session['number'] = ''
             request.session['gender'] = ''
-            # request.session['nin'] = nin
+            request.session['state'] = ''
+            request.session['address'] = ''
+            request.sesseion['lga'] = ''
             request.session['password'] = ''
             request.session['otp'] = ''
             messages.success(request, 'Account created successfully, you can now login.')
@@ -524,6 +542,7 @@ def goodstodeliverpreview(request, pk):
     if request.method == 'POST':
         deliverypassword = request.POST.get('delivery-password')
         if deliverypassword == getproposal.deliveryPassword:
+
             text = 'Dear ' + getproposal.senderName + ', your package has ben sent successfully to ' + getproposal.receiverName + '\n Thank you for using GDRider, we would like to partner with you some other days.'
 
             try:
@@ -535,9 +554,14 @@ def goodstodeliverpreview(request, pk):
                 messages.error(request, 'error occur please try again later ')
                 return redirect('base:acceptProposal', getproposal.id)
             if 'status' in sendsms:
+                used = user.objects.get(phoneNumber=request.user.phoneNumber)
+                percentage = 0.1 * int(getproposal.amount)
+                fund = int(getproposal.amount) - percentage
+                used.wallet = int(used.wallet) + int(fund)
+                used.save()
                 getproposal.deliver = True
                 getproposal.save()
-                messages.success(request, 'Goods Delivered successfully')
+                messages.success(request, 'Goods Delivered successfully and your wallet has been credited successfully')
 
                 return redirect('base:goodsDeliver')
             else:
@@ -604,13 +628,29 @@ def delivered(request, pk):
 
 def proposalDelete(request, pk):
     getproposal = proposal.objects.get(id=pk)
+    used = user.objects.get(phoneNumber=request.user.phoneNumber)
+    used.wallet = int(used.wallet) + int(getproposal.amount)
+    used.save()
     getproposal.delete()
-    messages.error(request, 'proposal has been deleted successfully')
+    messages.success(request, 'proposal has been deleted successfully and your account has been refunded')
     return redirect('base:proposalSent')
 
 
+@login_required(login_url='base:login')
 def profile(request):
-    return render(request, 'base/profile.html')
+    proposalr = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=False)).count
+    proposals = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber) & Q(accepted=False)).count
+
+    goodsent = proposal.objects.filter(Q(senderPhoneNumber=request.user.phoneNumber)
+                                       & Q(accepted=True)).count
+    goodstosend = proposal.objects.filter(Q(riderUsername=request.user) & Q(accepted=True) & Q(deliver=False)).count
+    goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
+                                           & Q(deliver=True)).count
+
+    pro = user.objects.get(phoneNumber=request.user.phoneNumber)
+    context = {'pro': pro, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
+               'proposals': proposals, 'goodsdeliver': goodsdeliver}
+    return render(request, 'base/profile.html', context)
 
 
 def forgetPassword(request):

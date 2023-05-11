@@ -21,6 +21,7 @@
 <!--     <link rel="stylesheet" href="{% static 'base/style.css' %}">-->
      <link rel="stylesheet" href="{% static 'base/style.css' %}">
 
+
 </head>
 <body onload="getLocation();">
 <!--fix-header-->
@@ -30,7 +31,7 @@
             <div class="font-rale font-size-14">
                 {% if request.user.is_authenticated%}
                 <a href="{% url 'base:logout' %}" class="px-3 border-right border-left text-dark">Logout</a>
-                <a href="" class="px-3 border-right text-dark">Profile</a>
+                <a href="{% url 'base:profile'%}" class="px-3 border-right text-dark">Profile</a>
                 {%else%}
                   <a href="{% url 'base:login' %}" class="px-3 border-right border-left text-dark">Login</a>
                 <a href="{%url 'base:signup' %}" class="px-3 border-right text-dark">SignUp</a>
@@ -148,7 +149,7 @@
         <div class="copyright text-center bg-dark text-white py-2">
           <p class="font-rale font-size-14">&copy; Copyrights 2023. Desing By <a href="#" class="color-second">Speedoo</a></p>
         </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

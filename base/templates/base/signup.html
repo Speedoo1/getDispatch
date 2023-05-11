@@ -9,6 +9,7 @@
             <div class="text-center">
                 <h2>Signup Account</h2>
             </div>
+            <hr/>
             <br/>
               {% for message in messages%}
 
@@ -24,21 +25,33 @@
                 {% csrf_token %}
                 <label for=""><strong>Full name</strong> </label><br/>
 
-                <input type="text" class="login-input" name="full-name" ><br/>
+                <input type="text" class="login-input" name="full-name" required><br/>
+
+                 <label for=""><strong>State</strong> </label><br/>
+                <input class="login-input" id="states" name="state" required />
 
 
+                <br/>
+                 <label for=""><strong>Local Government Area</strong> </label><br/>
+                <input class="login-input" id ='lgas' name="lga" required>
+
+
+                <br/>
+
+                <label for=""><strong>Home Address</strong> </label><br/>
+                <input type="text" class="login-input" name="home" required >
+                <br>
 
                 <label for=""><strong>Email Address</strong> </label><br/>
-                <input type="text" class="login-input" name="email" >
+                <input type="text" class="login-input" name="email" required >
 
 
 
-                <br/><br/>
+                <br/>
                 <label for=""><strong>Phone number</strong> </label><br/>
-                <input type="tel" class="login-input" name="number" >
-                <br><br>
-                <label ><b>NIN slip:</b></label>
-                <input class="login-input" type="file" autocomplete="off"   name="nin"  accept="application/jpeg, application/png"><br/>
+                <input type="tel" class="login-input" name="number" required >
+                <br>
+
                 <label ><b>Gender:</b></label>
                 <select class="login-input" name="gender" id="e"  style="display: block; margin-top:12px ;" required>
                            <option value="Male">Male</option>
@@ -61,11 +74,7 @@
 
                 <br/>
                 <input type="submit" class="btn btn-success"  id="subb" value="SignUp now" name="" id="">
-                    <div class="text-right" style="padding: 10px 15px;">
-                        <a href="" class="text-right">Forgot Password</a><br/>
-
-                    </div>
-
+<br/><br/>
 
                 <span  style="margin-top: 12px;">Already have an account</span>&nbsp;<a href="{% url 'base:login'%}">Login</a>
 
@@ -73,6 +82,7 @@
         </div>
 
     </div>
+
 
 
 
@@ -105,6 +115,8 @@ var p2=id2
 
 
  }
+
+
 </script>
 
 {% endblock%}

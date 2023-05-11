@@ -11,7 +11,11 @@ class user(AbstractUser):
     fullName = models.CharField(max_length=100)
     email = models.EmailField()
     phoneNumber = models.CharField(max_length=20, unique=True)
-    ninslip = models.ImageField()
+    localGoverment = models.CharField(max_length=2000, null=True, blank=True)
+    state = models.CharField(max_length=1000, blank=True, null=True)
+    wallet = models.TextField(default='0')
+    address = models.TextField(blank=True, null=True)
+    gender = models.CharField(max_length=20, null=True, blank=True)
     verify = models.BooleanField(default=False)
     USERNAME_FIELD = 'phoneNumber'
 
