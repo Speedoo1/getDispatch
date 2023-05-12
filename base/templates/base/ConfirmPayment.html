@@ -35,13 +35,18 @@
     <script>
 
         function makePayments() {
-    FlutterwaveCheckout({
-      public_key: "FLWPUBK_TEST-81e954c331f3cb6649a8153dbfee2d75-X",
-      tx_ref: "titanic-48981487343MDI0NzMx",
+$(document).ready(function(){
+    $.ajax({
+  type:'GET',
+  url:"{% url 'base:key'   %}",
+  success:function(response){
+     FlutterwaveCheckout({
+      public_key:response['public_key'],
+      tx_ref: response['tx_ref'],
       amount: {{profile.fund_wallet}},
       currency: "NGN",
       payment_options: "card, banktransfer, ussd",
-      redirect_url: "{% url 'base:successful'%}",
+      redirect_url: "{% url 'base:successful' %}",
       meta: {
         consumer_id: 23,
         consumer_mac: "92a3-912ba-1192a",
@@ -57,7 +62,21 @@
         logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
       },
     });
+
+
+  },
+  error:function(response){
+  console.log('error occur'+response)
   }
+
+  });
+
+
+  });
+}
+
+
+
 </script>
 
 

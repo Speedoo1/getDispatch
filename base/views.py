@@ -1,6 +1,8 @@
 import json
 import uuid
 import random as r
+from distutils.command.config import config
+
 from django.contrib import admin
 import requests
 from django.contrib import messages
@@ -745,3 +747,10 @@ def successPayment(request):
     used.save()
     messages.success(request, 'Wallet credited Successfully')
     return redirect('base:profile')
+
+
+def secertekey(request):
+    context = {'public_key': "FLWPUBK_TEST-81e954c331f3cb6649a8153dbfee2d75-X", 'tx_ref': "titanic-48981487343MDI0NzMx",
+               'urlsuccess': 'successful'}
+    return HttpResponse(json.dumps(context),
+                        content_type="application/json")

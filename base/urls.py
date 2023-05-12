@@ -35,5 +35,6 @@ urlpatterns = [
     path('reset-password-verification', views.resetPasswordVerify, name='reset-password-verify'),
     path('Fund-Amount', views.queryAmount, name='Fund-wallet'),
     path('confirm-payment', views.confirmPayment, name='confirm-payment'),
-    path('success-payment',views.successPayment, name='successful')
+    path('success-payment', views.successPayment, name='successful'),
+    path('key', views.secertekey, name='key')
 ]
