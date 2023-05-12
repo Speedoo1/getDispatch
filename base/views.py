@@ -157,15 +157,32 @@ def proposalDetailsUpdate(request, pk):
     goodsdeliver = proposal.objects.filter(Q(riderUsername=request.user)
                                            & Q(deliver=True)).count
     if request.method == "POST":
-        getproposal.goodsName = goodsName
-        getproposal.receiverAddress = receiverAddress
-        getproposal.receiverName = receiverName
-        getproposal.receiverPhoneNumber = receiverNumber
-        getproposal.goodsDescription = goodsDescription
-        getproposal.amount = amount
-        messages.success(request, 'Proposal Updated Successfully')
+        used = user.objects.get(phoneNumber=request.user.phoneNumber)
+        used.wallet = int(used.wallet) + int(getproposal.amount)
+        used.save()
+        getproposal.formeramount = getproposal.amount
         getproposal.save()
-        return redirect('base:proposalupdate', getproposal.id)
+        if int(amount) <= int(used.wallet):
+            getproposal.goodsName = goodsName
+            getproposal.receiverAddress = receiverAddress
+            getproposal.receiverName = receiverName
+            getproposal.receiverPhoneNumber = receiverNumber
+            getproposal.goodsDescription = goodsDescription
+            getproposal.amount = amount
+            used.wallet = int(used.wallet) - int(amount)
+            used.save()
+
+            messages.success(request, 'Proposal Updated Successfully')
+            getproposal.save()
+            return redirect('base:proposalupdate', getproposal.id)
+        else:
+            used.wallet = int(used.wallet) - int(getproposal.formeramount)
+            getproposal.formeramount = ''
+            getproposal.save()
+            used.save()
+            messages.error(request, 'insufficient Rider fee, kindly fund your wallet')
+            return redirect('base:proposalupdate', getproposal.id)
+
     context = {'getproposal': getproposal, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
 
@@ -703,3 +720,28 @@ def resetPasswordVerify(request):
             messages.error(request, 'incorrect  otp code')
 
     return render(request, 'base/resetPasswordVerification.html')
+
+
+def queryAmount(request):
+    used = user.objects.get(phoneNumber=request.user.phoneNumber)
+    if request.method == 'POST':
+        amount = request.POST.get('money')
+        used.fund_wallet = amount
+        used.save()
+        return redirect('base:confirm-payment')
+    return render(request, 'base/AmountQuery.html')
+
+
+def confirmPayment(request):
+    used = user.objects.get(phoneNumber=request.user.phoneNumber)
+    context = {'profile': used}
+    return render(request, 'base/ConfirmPayment.html', context)
+
+
+def successPayment(request):
+    used = user.objects.get(phoneNumber=request.user.phoneNumber)
+    used.wallet = int(used.wallet) + int(used.fund_wallet)
+    used.fund_wallet = ''
+    used.save()
+    messages.success(request, 'Wallet credited Successfully')
+    return redirect('base:profile')

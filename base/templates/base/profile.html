@@ -9,13 +9,24 @@
             <div class="text-center">
                 <h2>My Profile</h2>
             </div>
+             {% for message in messages%}
+
+                    <div class="alert {{message.tags}} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                      </button>
+                      &nbsp;{{message}}
+
+                  </div>
+                   {%endfor%}
+
             <form class="mt-5" method="post" action="{%url 'base:ride'%}" enctype="multipart/form-data">
                 {% csrf_token %}
                  <label ><strong>Wallet Balance</strong> </label><br/>
                 <select class="login-input">
                     <option class="">&#8358; {{pro.wallet|intcomma}}</option>
                 </select>
-                <a href="" class="btn btn-success mt-2">Fund wallet</a>
+                <a href="{% url 'base:Fund-wallet'%}" class="btn btn-success mt-2">Fund wallet</a>
                 <br>
                 <label class="mt-2"><strong>Full Name </strong> </label><br/>
                 <input type="text" class="login-input" value="{{pro.fullName}}" name="fullName" ><br/>

@@ -1,0 +1,65 @@
+<div style="background-color: darkgrey;">
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    {% extends 'base/navbar.html'%}
+     {% block proposal_received%}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'base:proposal-receive'%}">Proposal Received ({{proposalr}})</a>
+                  </li>
+                  {%endblock%}
+{%load static %}
+
+{% block body%}
+<div class="container">
+        <div class="container" style="background-color: #fff; margin-top: 5%; padding: 10px 15px; width:fit-content ; height:fit-content">
+            <div class="text-center">
+                <h2>Confirm Payment</h2>
+            </div>
+           <hr/>
+
+            <h5>You are about to fund your wallet with the total sum of {{profile.fund_wallet}},<br/> kindly press the button below to continue with the transaction
+
+            </h5>
+            <div class="text-center mt-3">
+                <button class="btn btn-success" onclick="makePayments()">Continue Payment</button>
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+    </div>
+    <script>
+
+        function makePayments() {
+    FlutterwaveCheckout({
+      public_key: "FLWPUBK_TEST-81e954c331f3cb6649a8153dbfee2d75-X",
+      tx_ref: "titanic-48981487343MDI0NzMx",
+      amount: {{profile.fund_wallet}},
+      currency: "NGN",
+      payment_options: "card, banktransfer, ussd",
+      redirect_url: "{% url 'base:successful'%}",
+      meta: {
+        consumer_id: 23,
+        consumer_mac: "92a3-912ba-1192a",
+      },
+      customer: {
+        email: "{{profile.email}}",
+        phone_number: '{{profile.phoneNumber}}',
+        name: '{{profile.fullName}}',
+      },
+      customizations: {
+        title: "GDRider",
+        description: "Fund Your Wallet",
+        logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+      },
+    });
+  }
+</script>
+
+
+    {%endblock%}
+</div>
