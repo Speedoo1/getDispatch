@@ -20,7 +20,7 @@
                   </div>
                    {%endfor%}
 
-            <form class="mt-5" method="post" action="{%url 'base:ride'%}" enctype="multipart/form-data">
+            <form class="mt-5" method="post" action="{%url 'base:profile'%}" enctype="multipart/form-data">
                 {% csrf_token %}
                  <label ><strong>Wallet Balance</strong> </label><br/>
                 <select class="login-input">
