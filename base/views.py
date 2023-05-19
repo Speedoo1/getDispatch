@@ -667,6 +667,9 @@ def profile(request):
                                            & Q(deliver=True)).count
 
     pro = user.objects.get(phoneNumber=request.user.phoneNumber)
+    if request.method == 'POST':
+        pass
+
     context = {'pro': pro, 'proposalr': proposalr, 'goodstosend': goodstosend, 'goodsent': goodsent,
                'proposals': proposals, 'goodsdeliver': goodsdeliver}
     return render(request, 'base/profile.html', context)

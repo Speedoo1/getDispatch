@@ -22,21 +22,25 @@
             <form class="mt-5" method="post"  onsubmit="submmit()" action="{% url 'base:login'%}">
                 {% csrf_token %}
 
-                <label for=""><strong>Phone Number</strong> </label><br/>
+                <label><strong>Phone Number</strong> </label><br/>
                             <input type="tel" class="login-input form-control-md" name="number" id="email" required>
                             <br>
                             <div class="d-flex">
-                                <label for=""><strong>Password</strong> </label>  <span class="ml-auto btn" id="show"  onclick="paas()" style="">Show Password</span>
+                                <label ><strong>Password</strong> </label>  <span class="ml-auto btn" id="show"  onclick="paas()" style="">Show Password</span>
 
                             </div>
 
                             <input type="password" class="login-input form-control-md" name="password" id="password">
                             <br/>
 
-                            <input type="checkbox" style="padding: 15px 10px ;" name="" id="">&nbsp;&nbsp;<span>Remind me</span>
-                            <br/><br/>
-                            <input type="submit" class="btn btn-success" id="subb"  value="Login now"  name="" >
-                                <div class="text-right" style="padding: 10px 15px;">
+<!--                            <input type="checkbox" style="padding: 15px 10px ;" name="" id="">&nbsp;&nbsp;<span>Remind me</span>-->
+<!--                            -->
+                            <br/>
+
+                                     <input type="submit" class="btn btn-success" id="subb" style="width:50%"  value="Login now"  name="" >
+
+
+                                <div class="text-right mt-5" style="padding: 10px 15px;">
                                     <a href="{% url 'base:forgetPassword' %}" class="text-right">Forgot Password</a><br/>
                                 </div>
 
