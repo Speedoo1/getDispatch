@@ -1,5 +1,5 @@
 asgiref==3.5.2
-pip=3.9
+
 beautifulsoup4==4.11.1
 bython==0.8
 cachetools==5.2.0
