@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2-vbq$e(e^ou*&%^t2@a4pu9a#dbk*s*13wp=n7qll3hf5u=**
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app']
 CSRF_TRUSTED_ORIGINS = ['https://getdispatch-production.up.railway.app']
 
 # Application definition
@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'getDispatch.wsgi.application'
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR/'backup/'}
 DATABASES = {
-    'real': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
 
-    'default': {
+    'real': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
